@@ -1,12 +1,14 @@
 const APP_PREFIX = 'Budget-Tracker';
 const VERSION = 'v1';
 const CACHE_NAME = APP_PREFIX + VERSION;
-// const DATA_CACHE_NAME = "data-cache-" + VERSION;
+const DATA_CACHE_NAME = "data-cache-" + VERSION;
 
 const FILES_TO_CACHE = [
     '/',
     '/index.html',
-    // '/manifest.json',
+    "./js/idb.js",
+    './js/index.js',
+    './manifest.json',
     '/css/styles.css',
     '/icons/icon-72x72.png',
     '/icons/icon-96x96.png',
