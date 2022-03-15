@@ -20,6 +20,17 @@ const FILES_TO_CACHE = [
     '/icons/icon-512x512.png',
 ]
 
+// Respond with cached resources
+self.addEventListener('install', function (e) {
+    e.waitUntil(
+        caches.open(CACHE_NAME).then(function (cache) {
+            console.log('installing cache : ' + CACHE_NAME);
+            return cache.addAll(FILES_TO_CACHE);
+        })
+    )
+})
+
+// Cache resources
 self.addEventListener('fetch', function (e) {
     console.log('fetch request : ' + e.request.url)
     e.respondWith(
@@ -32,27 +43,18 @@ self.addEventListener('fetch', function (e) {
                 return fetch(e.request)
             }
 
-            // You can omit if/else for console.log & put one line below like this too.
-            // return request || fetch(e.request)
         })
     )
 })
 
-self.addEventListener('install', function (e) {
-    e.waitUntil(
-        caches.open(CACHE_NAME).then(function (cache) {
-            console.log('installing cache : ' + CACHE_NAME);
-            return cache.addAll(FILES_TO_CACHE);
-        })
-    )
-})
-
+// Delete outdated caches
 self.addEventListener('activate', function (e) {
     e.waitUntil(
         caches.keys().then(function (keyList) {
             let cacheKeeplist = keyList.filter(function (key) {
                 return key.indexOf(APP_PREFIX);
             });
+              // add current cache name to keeplist
             cacheKeeplist.push(CACHE_NAME);
 
             return Promise.all(
